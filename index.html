@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestoría Marketplace</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .contenedor {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.15);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    input, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin: 8px 0 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #1877f2;
+      color: white;
+      font-size: 16px;
+      margin: 5px;
+    }
+
+    .publicacion {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      background: #fafafa;
+    }
+
+    .eliminar {
+      background: #d9534f;
+    }
+
+    .marketplace {
+      background: #42b72a;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <h1>Gestoría Marketplace</h1>
+
+  <h3>Agregar publicación</h3>
+
+  <label>Nombre del servicio</label>
+  <input type="text" id="nombre" placeholder="Ejemplo: Gestoría de documentos">
+
+  <label>Descripción</label>
+  <textarea id="descripcion" placeholder="Descripción del servicio"></textarea>
+
+  <label>Precio</label>
+  <input type="text" id="precio" placeholder="Ejemplo: $300">
+
+  <label>Enlace de Marketplace</label>
+  <input type="url" id="enlace" placeholder="Pega aquí el enlace">
+
+  <button onclick="guardar()">Guardar publicación</button>
+
+  <h3>Mis publicaciones</h3>
+
+  <div id="lista"></div>
+
+</div>
+
+<script>
+
+let publicaciones = JSON.parse(localStorage.getItem("publicaciones")) || [];
+
+function guardar() {
+
+  const nombre = document.getElementById("nombre").value;
+  const descripcion = document.getElementById("descripcion").value;
+  const precio = document.getElementById("precio").value;
+  const enlace = document.getElementById("enlace").value;
+
+  if (!nombre) {
+    alert("Escribe el nombre del servicio");
+    return;
+  }
+
+  publicaciones.push({
+    nombre,
+    descripcion,
+    precio,
+    enlace
+  });
+
+  localStorage.setItem("publicaciones", JSON.stringify(publicaciones));
+
+  document.getElementById("nombre").value = "";
+  document.getElementById("descripcion").value = "";
+  document.getElementById("precio").value = "";
+  document.getElementById("enlace").value = "";
+
+  mostrar();
+
+  alert("Publicación guardada");
+}
+
+function eliminar(index) {
+
+  publicaciones.splice(index, 1);
+
+  localStorage.setItem("publicaciones", JSON.stringify(publicaciones));
+
+  mostrar();
+}
+
+function mostrar() {
+
+  const lista = document.getElementById("lista");
+
+  lista.innerHTML = "";
+
+  publicaciones.forEach((p, index) => {
+
+    lista.innerHTML += `
+      <div class="publicacion">
+
+        <h3>${p.nombre}</h3>
+
+        <p>${p.descripcion}</p>
+
+        <strong>${p.precio}</strong>
+
+        <br><br>
+
+        ${
+          p.enlace
+          ? `<a href="${p.enlace}" target="_blank">
+               <button class="marketplace">
+                 Abrir Marketplace
+               </button>
+             </a>`
+          : ""
+        }
+
+        <button class="eliminar" onclick="eliminar(${index})">
+          Eliminar
+        </button>
+
+      </div>
+    `;
+  });
+}
+
+mostrar();
+
+</script>
+
+</body>
+</html>
