@@ -155,18 +155,18 @@ function mostrar() {
 
         <br><br>
 
-        ${
-          p.enlace
-          ? `<a href="${p.enlace}" target="_blank">
-               <button class="marketplace">
-                 Abrir Marketplace
-               </button>
-             </a>`
-          <button onclick="copiarPublicacion(${index})">
-    Copiar publicación
-</button>
-          : ""
-        }
+      ${
+  p.enlace
+    ? `<a href="${p.enlace}" target="_blank">
+         <button class="marketplace">
+           Abrir Marketplace
+         </button>
+       </a>
+       <button onclick="copiarPublicacion(${index})">
+         Copiar publicación
+       </button>`
+    : ""
+}
 
         <button class="eliminar" onclick="eliminar(${index})">
           Eliminar
