@@ -162,6 +162,9 @@ function mostrar() {
                  Abrir Marketplace
                </button>
              </a>`
+          <button onclick="copiarPublicacion(${index})">
+    Copiar publicación
+</button>
           : ""
         }
 
@@ -175,8 +178,21 @@ function mostrar() {
 }
 
 mostrar();
+  function copiarPublicacion(index) {
+    const p = publicaciones[index];
+
+    const texto =
+        p.nombre + "\n\n" +
+        p.descripcion + "\n\n" +
+        "Precio: " + p.precio;
+
+    navigator.clipboard.writeText(texto).then(() => {
+        alert("Publicación copiada. Ya puedes pegarla en Marketplace.");
+    });
+}
 
 </script>
+
 
 </body>
 </html>
